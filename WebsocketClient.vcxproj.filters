@@ -26,5 +26,11 @@
     <ClInclude Include="easywsclient.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="unistd.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="beast\websocket.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
