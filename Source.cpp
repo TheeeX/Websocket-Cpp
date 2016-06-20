@@ -17,23 +17,36 @@ void handle_message(const std::string & message)
 	if (message == "world") { ws->close(); }
 }
 
+class hudGyro {
+	public:
+		#ifdef _WIN32
+				INT rc;
+				WSADATA wsaData;
+		#endif
+
+		// Constructor
+		//To connect to the websocket
+				hudGyro() {
+					printf("\nInitialising websocket -> hudGyro\n");
+					#ifdef _WIN32
+						rc = WSAStartup(MAKEWORD(2, 2), &wsaData);
+						if (rc) {
+							printf("WSAStartup Failed.\n");
+						}
+					#endif
+
+					ws = WebSocket::from_url("ws://192.168.0.102:81/");
+					assert(ws);
+				}
+
+};
+
 int main()
 {
-#ifdef _WIN32
-	INT rc;
-	WSADATA wsaData;
+	hudGyro hgyro;
 
-	rc = WSAStartup(MAKEWORD(2, 2), &wsaData);
-	if (rc) {
-		printf("WSAStartup Failed.\n");
-		return 1;
-	}
-#endif
-
-	ws = WebSocket::from_url("ws://localhost:8126/foo");
-	assert(ws);
-	ws->send("goodbye");
-	ws->send("hello");
+	ws->send("#");
+	//ws->send("hello");
 	while (ws->getReadyState() != WebSocket::CLOSED) {
 		ws->poll();
 		ws->dispatch(handle_message);
